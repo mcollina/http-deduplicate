@@ -1,0 +1,30 @@
+{
+  "name": "http-deduplicate",
+  "version": "0.0.1",
+  "description": "deduplicate multiple http request to a single endpoint",
+  "main": "deduplicate.js",
+  "scripts": {
+    "test": "standard && tap test.js"
+  },
+  "pre-commit": "test",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcollina/http-deduplicate.git"
+  },
+  "keywords": [
+    "http",
+    "deduplicate",
+    "queue"
+  ],
+  "author": "Matteo Collina <hello@matteocollina.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcollina/http-deduplicate/issues"
+  },
+  "homepage": "https://github.com/mcollina/http-deduplicate#readme",
+  "devDependencies": {
+    "pre-commit": "^1.1.2",
+    "standard": "^5.4.1",
+    "tap": "^5.4.2"
+  }
+}
