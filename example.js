@@ -16,13 +16,17 @@ http.createServer(function (req, res) {
 })
 
 http.createServer(function (req, res) {
-  deduplicate('http://localhost:3001/', function (err, data) {
+  deduplicate('http://localhost:3001/', function (err, data, cb) {
     if (err) {
       res.statusCode(500)
       res.end()
       return
     }
-    res.end(data)
+
+    setTimeout(function () {
+      res.end(data)
+      cb()
+    }, Math.floor(Math.random() * 10) + 1)
   })
 }).listen(3000, function () {
   console.log('server listening on', this.address().port)
