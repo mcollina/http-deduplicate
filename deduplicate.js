@@ -2,7 +2,9 @@
 
 var Map = require('es6-map')
 var http = require('http')
+var https = require('https')
 var bl = require('bl')
+var URL = require('url')
 
 function deduplicator () {
   var queues = new Map()
@@ -10,17 +12,24 @@ function deduplicator () {
   return deduplicate
 
   function deduplicate (address, cb) {
+    var options
+    if (typeof address === 'string') {
+      options = URL.parse(address)
+    } else {
+      options = address
+      address = URL.format(address)
+    }
     var queue = queues.get(address)
     if (queue) {
       queue.push(cb)
       return
     } else {
       queues.set(address, [cb])
-      trigger(address)
+      trigger(address, options)
     }
   }
 
-  function trigger (address) {
+  function trigger (address, options) {
     var result = bl(function (err, data) {
       var queue = queues.get(address)
       queues.delete(address)
@@ -28,7 +37,13 @@ function deduplicator () {
       queue.forEach(push, { err: err, data: data })
     })
 
-    http.get(address).on('response', function (res) {
+    var protocol = http
+
+    if (options.protocol === 'https:') {
+      protocol = https
+    }
+
+    protocol.get(options).on('response', function (res) {
       res.pipe(result)
     })
   }

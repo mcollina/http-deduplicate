@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/mcollina/http-deduplicate#readme",
   "devDependencies": {
+    "pem": "^1.8.1",
     "pre-commit": "^1.1.2",
     "standard": "^5.4.1",
     "tap": "^5.4.2"
