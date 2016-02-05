@@ -89,3 +89,37 @@ test('https support', function (t) {
     t.tearDown(server.close.bind(server))
   })
 })
+
+test('deduplicate with temporary store', function (t) {
+  t.plan(8)
+
+  var server = http.createServer(function (req, res) {
+    t.ok('request received')
+    res.end('hello')
+  }).listen(0, function () {
+    var deduplicate = deduplicator()
+    var address = server.address()
+    var dest = 'http://localhost:' + address.port
+
+    deduplicate(dest, function check (err, data, cb) {
+      t.error(err)
+      t.deepEqual(data, new Buffer('hello'))
+
+      deduplicate(dest, function check (err, data) {
+        t.error(err)
+        t.deepEqual(data, new Buffer('hello'))
+
+        // clear the temporary store opened by the first request
+        cb()
+
+        // this will cause a request to be received
+        deduplicate(dest, function check (err, data) {
+          t.error(err)
+          t.deepEqual(data, new Buffer('hello'))
+        })
+      })
+    })
+  })
+
+  t.tearDown(server.close.bind(server))
+})
