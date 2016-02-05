@@ -10,6 +10,9 @@ So, you call your endpoint for all requests. This module allows you to
 reduce the traffic and response time by calling a given URL only once at
 any given interval.
 
+In my tests, http-deduplicate increases the throughput by a 2-5x factor, depending on
+the application.
+
 ## Install
 
 ```
