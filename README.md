@@ -1,5 +1,7 @@
 # http-deduplicate
 
+[![build status](https://secure.travis-ci.org/mcollina/http-deduplicate.svg)](http://travis-ci.org/mcollina/http-deduplicate)
+
 Deduplicate multiple http request to a single endpoint.
 
 You have an application composed of multiple HTTP servers, and you need
