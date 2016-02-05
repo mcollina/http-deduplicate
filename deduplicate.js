@@ -30,12 +30,15 @@ function deduplicator () {
     var temp = temporaries.get(address)
     if (temp) {
       nextTick(cb, null, temp, noop)
-      return
+    } else {
+      callMaybe(address, options, cb)
     }
+  }
+
+  function callMaybe (address, options, cb) {
     var queue = queues.get(address)
     if (queue) {
       queue.push(cb)
-      return
     } else {
       queues.set(address, [cb])
       // let's defer the setup
